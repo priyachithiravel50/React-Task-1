@@ -124,7 +124,7 @@ class Name extends Component {
         </div>
         <br />
         <table className="table table-bordered container" style={{ border: "1px solid black", width: "100%" }} >
-          <thead className="table-secondary">
+          <thead className="table-dark">
             <tr>
               <th>S/No</th>
               <th>Name</th>
