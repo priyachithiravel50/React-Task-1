@@ -1,152 +1,163 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 
-function Name() {
-  const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    age: "",
-    bloodGroup: "",
-    gender: "",
-  });
+class Name extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      formData: {
+        name: "",
+        address: "",
+        age: "",
+        bloodGroup: "",
+        gender: "",
+      },
+      dataList: [],
+      editIndex: -1,
+    };
+  }
 
-  const [dataList, setDataList] = useState([]);
+      // Handle Change
+      handleChange = (e) => {
+        const { name, value } = e.target;
+        this.setState({
+          formData: {
+            ...this.state.formData,
+            [name]: value,
+          },
+        });
+      };
 
-  const [editIndex, setEditIndex] = useState(-1);
+    // Form submission
+    handleSubmit = (e) => {
+      e.preventDefault();
+      const currentDate = new Date().toLocaleDateString();
 
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+      if (this.state.editIndex !== -1) {
+        const updatedList = this.state.dataList.map((item, index) =>
+          index === this.state.editIndex ? { ...this.state.formData, date: currentDate } : item
+        );
+        this.setState({ dataList: updatedList, editIndex: -1 });
+      } else {
+        this.setState({
+          dataList: [...this.state.dataList, { ...this.state.formData, date: currentDate }],
+        });
+      }
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const currentDate = new Date().toLocaleDateString();
+          // Reset form
+          this.setState({
+            formData: { name: "", address: "", age: "", bloodGroup: "", gender: "" },
+          });
+        };
 
-    if (editIndex !== -1) {
-      // Edit existing data
-      const updatedList = dataList.map((item, index) =>
-        index === editIndex ? { ...formData, date: currentDate } : item
-      );
-      setDataList(updatedList);
-      setEditIndex(-1);
-    } else {
-      // Add new data
-      setDataList([...dataList, { ...formData, date: currentDate }]);
-    }
+      // Handle Edit
+      handleEdit = (index) => {
+        const item = this.state.dataList[index];
+        this.setState({
+          formData: {
+            name: item.name,
+            address: item.address,
+            age: item.age,
+            bloodGroup: item.bloodGroup,
+            gender: item.gender,
+          },
+          editIndex: index,
+        });
+      };
 
-    setFormData({ name: "", address: "", age: "", bloodGroup: "", gender: "" });
-  };
+        // Handle Delete
+        handleDelete = (index) => {
+          const filteredList = this.state.dataList.filter((_, i) => i !== index);
+          this.setState({ dataList: filteredList });
+        };
 
-  // Handle Edit
-  const handleEdit = (index) => {
-    const item = dataList[index];
-    setFormData({
-      name: item.name,
-      address: item.address,
-      age: item.age,
-      bloodGroup: item.bloodGroup,
-      gender: item.gender,
-    });
-    setEditIndex(index);
-  };
+        // Cancel form 
+        handleCancel = () => {
+          this.setState({
+            formData: { name: "", address: "", age: "", bloodGroup: "", gender: "" },
+            editIndex: -1,
+          });
+        };
 
-  // Handle Delete
-  const handleDelete = (index) => {
-    const filteredList = dataList.filter((_, i) => i !== index);
-    setDataList(filteredList);
-  };
+  render() {
+    return (
+      <>
+        <div className="form-container">
+          <form className="form" onSubmit={this.handleSubmit}>
+            <h2>Form Page</h2>
 
-  // Cancel form action
-  const handleCancel = () => {
-    setFormData({ name: "", address: "", age: "", bloodGroup: "", gender: "" });
-    setEditIndex(-1);
-  };
+            <label htmlFor="name">Name:</label>
+            <input type="text" id="name" name="name" className="require" placeholder="Enter your name" value={this.state.formData.name} onChange={this.handleChange} required />
 
-  return (
-    <>
-      <div className="form-container">
-        <form className="form" onSubmit={handleSubmit}>
-          <h2>Form Page</h2>
+            <label htmlFor="address">Address:</label>
+            <textarea id="address" name="address" className="require" placeholder="Enter your address" value={this.state.formData.address} onChange={this.handleChange} required ></textarea>
 
-          <label htmlFor="name">Name:</label>
-          <input type="text" id="name" name="name" className="require" placeholder="Enter your name" value={formData.name} onChange={handleChange} required />
+            <label htmlFor="age">Age:</label>
+            <input type="number" id="age"  name="age"  className="require"  placeholder="Enter your age"  value={this.state.formData.age}  onChange={this.handleChange}  required />
 
-          <label htmlFor="address">Address:</label>
-          <textarea id="address" name="address" className="require" placeholder="Enter your address" value={formData.address} onChange={handleChange} required></textarea>
+            <label htmlFor="bloodGroup">Blood Group:</label>
+            <select id="bloodGroup" name="bloodGroup" value={this.state.formData.bloodGroup} onChange={this.handleChange} required>
+              <option value="">Select your blood group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+            </select>
 
-          <label htmlFor="age">Age:</label>
-          <input type="number" id="age" name="age" className="require" placeholder="Enter your age" value={formData.age} onChange={handleChange} required/>
+            <label id="classname">Gender:</label>
+            <div className="box4">
+              <input  type="radio"  name="gender"  value="Male"  checked={this.state.formData.gender === "Male"}  onChange={this.handleChange}/>{" "} Male
+              <input type="radio" name="gender" value="Female" checked={this.state.formData.gender === "Female"} onChange={this.handleChange} />{" "} Female
+              <input  type="radio"  name="gender"  value="Others"  checked={this.state.formData.gender === "Others"}  onChange={this.handleChange}/>{" "}Others
+            </div>
 
-          <label htmlFor="bloodGroup">Blood Group:</label>
-          <select id="bloodGroup" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required>
-            <option value="">Select your blood group</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-          </select>
-
-          <label>Gender:</label>
-          <div className="box4">
-            <input type="radio" name="gender" value="Male" checked={formData.gender === "Male"} onChange={handleChange} />{" "}
-            Male
-            <input type="radio" name="gender" value="Female" checked={formData.gender === "Female"} onChange={handleChange}/>{" "}
-            Female
-            <input type="radio" name="gender" value="Others" checked={formData.gender === "Others"} onChange={handleChange} />{" "} Others</div>
-
-          <div className="div">
-            <button type="submit" id="add">
-              {editIndex !== -1 ? "Update" : "Add"}
-            </button>
-            <button type="button" id="cancel" onClick={handleCancel}>
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-      <br />
-      <table className="table table-bordered table-striped" style={{border: "1px solid black", width: "100%"}}>
-        <thead className="table-dark">
-          <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Age</th>
-            <th>Blood Group</th>
-            <th>Gender</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataList.map((data, index) => (
-            <tr key={index}>
-              <td>{data.name}</td>
-              <td>{data.address}</td>
-              <td>{data.age}</td>
-              <td>{data.bloodGroup}</td>
-              <td>{data.gender}</td>
-              <td>{data.date}</td>
-              <td>
-                <button onClick={() => handleEdit(index)}>Edit</button>
-                <button onClick={() => handleDelete(index)} >Delete</button>
-              </td>
+            <div className="div">
+              <button type="submit" id="add">
+                {this.state.editIndex !== -1 ? "Update" : "Add"}
+              </button>
+              <button type="button" id="cancel" onClick={this.handleCancel}> Cancel </button>
+            </div>
+          </form>
+        </div>
+        <br />
+        <table className="table table-bordered container" style={{ border: "1px solid black", width: "100%" }} >
+          <thead className="table-secondary">
+            <tr>
+              <th>S/No</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Age</th>
+              <th>Blood Group</th>
+              <th>Gender</th>
+              <th>Date</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </>
-  );
+          </thead>
+          <tbody>
+            {this.state.dataList.map((data, index) => (
+              <tr key={index}>
+                <td>{index+1}</td>
+                <td>{data.name}</td>
+                <td>{data.address}</td>
+                <td>{data.age}</td>
+                <td>{data.bloodGroup}</td>
+                <td>{data.gender}</td>
+                <td>{data.date}</td>
+                <td>
+                 <button className="edit-btn" onClick={() => this.handleEdit(index)}>Edit</button>
+                 <button className="delete-btn" onClick={() => this.handleDelete(index)}>Delete</button>
+               </td>
+
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    );
+  }
 }
 
 export default Name;
-
-

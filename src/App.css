@@ -48,9 +48,9 @@ body {
 }
 
 .form-container {
-  max-width: 450px;
+  max-width: 500px;
   margin: auto;
-  margin-top: 60px;
+  margin-top: 30px;
   padding: 20px;
   background: #fff;
   border: 1px solid #ccc;
@@ -63,11 +63,11 @@ body {
   margin-bottom: 20px;
 }
 
-/* .form label {
+.form label {
   display: block;
   margin-bottom: 8px;
   font-weight: bold;
-} */
+}
 
 .form button {
   width: 97%;
@@ -122,5 +122,37 @@ select{
   width: 100px;
   padding: auto;
   margin-right: 50%;
-  background-color: red;
+  background-color: rgb(225, 18, 18);
+}
+
+#classname{
+  margin-top: 20px;
+}
+
+.edit-btn {
+  background-color: rgb(12, 108, 146);
+  color: white;
+  margin-left: 10px;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.delete-btn {
+  background-color: #f44336; 
+  color: white;
+  margin-left: 10px;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.edit-btn:hover {
+  background-color:  rgb(12, 108, 146);
+}
+
+.delete-btn:hover {
+  background-color: #f44336;
 }
