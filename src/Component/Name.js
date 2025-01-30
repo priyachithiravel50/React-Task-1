@@ -107,13 +107,18 @@ class Name extends Component {
               <option value="AB-">AB-</option>
             </select>
 
-            <label id="classname">Gender:</label>
-            <div className="box4">
-              <input  type="radio"  name="gender"  value="Male"  checked={this.state.formData.gender === "Male"}  onChange={this.handleChange}/>{" "} Male
-              <input type="radio" name="gender" value="Female" checked={this.state.formData.gender === "Female"} onChange={this.handleChange} />{" "} Female
-              <input  type="radio"  name="gender"  value="Others"  checked={this.state.formData.gender === "Others"}  onChange={this.handleChange}/>{" "}Others
+            <label id="classname" style={{  fontSize: '16px' }}>Gender:</label>
+            <div className="box4" style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+              <label style={{ fontSize: '14px', display: 'flex', alignItems: 'center' }}>
+                <input  type="radio"   name="gender"  id="gender-male"  value="Male"   checked={this.state.formData.gender === "Male"}   onChange={this.handleChange} /> {" "} Male
+              </label>
+              <label style={{ fontSize: '14px', display: 'flex', alignItems: 'center' }}>
+                <input type="radio" name="gender" id="gender-female" value="Female" checked={this.state.formData.gender === "Female"} onChange={this.handleChange} /> {" "} Female
+              </label>
+              <label style={{ fontSize: '14px', display: 'flex', alignItems: 'center' }}>
+                <input  type="radio" name="gender"  id="gender-others"  value="Others"   checked={this.state.formData.gender === "Others"}  onChange={this.handleChange} />  {" "} Others
+              </label>
             </div>
-
             <div className="div">
               <button type="submit" id="add">
                 {this.state.editIndex !== -1 ? "Update" : "Add"}
