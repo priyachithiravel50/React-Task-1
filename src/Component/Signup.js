@@ -13,6 +13,7 @@ class Register extends Component {
       password: "",
       confirmPassword: "",
       address: "",
+      role:"",
       errors: {},
       passwordVisible: false,
       confirmPasswordVisible: false,
@@ -75,6 +76,11 @@ class Register extends Component {
       errors.address = "Address is required";
       isValid = false;
     }
+    if (!this.state.role) {
+      errors.role = "Role is required";
+      isValid = false;
+    }
+    
 
     this.setState({ errors });
     return isValid;
@@ -159,6 +165,18 @@ class Register extends Component {
               <textarea type="text" className="form-control" id="address" value={address} onChange={this.handleChange} placeholder="Address"/>
               {errors.address && <small className="text-danger">{errors.address}</small>}
             </div>
+
+            <div className="mb-3">
+            <label className="form-label">Role:</label>
+            <select className="form-control" id="role" value={this.state.role} onChange={this.handleChange}>
+              <option value="">Select Role</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+            {this.state.errors.role && <small className="text-danger">{this.state.errors.role}</small>}
+          </div>
+
+
 
             <button type="submit" className="btn btn-primary mt-1">Submit</button>
           </form>
