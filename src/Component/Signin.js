@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./signin.css";
+import { Navigate } from "react-router-dom";
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,6 +11,7 @@ class Login extends Component {
       Password: "",
       errors: {},
       showPassword: false,
+      navigateToSignup: false,
     };
   }
 
@@ -16,29 +19,33 @@ class Login extends Component {
     this.setState({ [e.target.id]: e.target.value });
   };
 
-  // Form validation function
   validateForm = () => {
+    const { Name,  Password, navigateToSignup} = this.state;
     let errors = {};
-    if (!this.state.Name.trim()) errors.Name = "Username is required";
-    if (!this.state.Password.trim()) errors.Password = "Password is required";
-    return errors;
+    let isValid = true;
+
+    if (!Name.trim()) {
+      errors.Name = "Username is required";
+      isValid = false;
+    }
+   
+    if (!Password.trim()) {
+      errors.Password = "Password is required";
+      isValid = false;
+    }
+    
+
+    this.setState({ errors });
+    return isValid;
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const errors = this.validateForm();
-    if (Object.keys(errors).length > 0) {
-      this.setState({ errors });
-      return;
-    }
+    if (!this.validateForm()) return;
 
-    // No credential validation, just alert and navigate
-    alert("Login Successful!");
-    // Redirect to a dashboard or home page
-    this.props.navigate("/home");
-
-    // Reset form
-    this.setState({ Name: "", Password: "", errors: {} });
+    alert("Registration Successful!");
+    // this.props.navigate("/home");
+    this.setState({ Name: "",  Password: "", errors: {} });
   };
 
   togglePassword = () => {
@@ -46,66 +53,56 @@ class Login extends Component {
   };
 
   render() {
+    const { navigateToSignup} = this.state;
+    if (navigateToSignup){
+      return<Navigate to='/Signup'/>;
+    }
     return (
-      <div className="text">
-        <h1 style={{ color: "#203864", marginLeft: "80px" }}>Login Form</h1>
-        <div>
-        <div style={{ marginBottom: "15px", textAlign: "left" }}>
-          <label id="label">Name:</label>
-          <input
-            type="text"
-            id="Name"
-            placeholder="Name"
-            value={this.state.Name}
-            onChange={this.handleChange}
-            required
-          />
-          {this.state.errors.Name && <span style={{ color: "red" }}>{this.state.errors.Name}</span>}
-        </div>
+      <div className="contains mt-5 ">
+        <div className="card p-4 shadow-lg w-50 mx-auto">
+          <h2 className="text-center">Register</h2>
+          <form onSubmit={this.handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                id="Name"
+                placeholder="Enter your name"
+                value={this.state.Name}
+                onChange={this.handleChange}
+              />
+              {this.state.errors.Name && <small className="text-danger">{this.state.errors.Name}</small>}
+            </div>
 
-        <div style={{ marginBottom: "15px", textAlign: "left" }}>
-          <label>Password:</label>
-          <div style={{ position: "relative" }}>
-            <input
-              type={this.state.showPassword ? "text" : "password"}
-              id="Password"
-              placeholder="Password"
-              autoComplete="off"
-              value={this.state.Password}
-              onChange={this.handleChange}
-            />
-            <i
-              className={`fa ${this.state.showPassword ? "fa-eye-slash" : "fa-eye"}`}
-              onClick={this.togglePassword}
-              id="show"
-            />
-          </div>
-          {this.state.errors.Password && <span style={{ color: "red" }}>{this.state.errors.Password}</span>}
-        </div>
-        </div>
+           
+            <div className="mb-3">
+              <label className="form-label">Password</label>
+              <input
+                type={this.state.showPassword ? "text" : "password"}
+                className="form-control"
+                id="Password"
+                placeholder="Enter password"
+                value={this.state.Password}
+                onChange={this.handleChange}
+              />
+              {this.state.errors.Password && <small className="text-danger">{this.state.errors.Password}</small>}
+            </div>
 
-        <div style={{ marginBottom: "15px", textAlign: "left" }}>
-          <label className="check">
-            <input type="checkbox" id="box" /> I agree to the{" "}
-            <a href="#" style={{ textDecoration: "underline", color: "blue" }}>
-              terms and conditions
-            </a>{" "}
-            .
-          </label>
-        </div>
+            <div className="form-check mb-3">
+              <input type="checkbox" className="form-check-input" id="terms"/>
+              <label className="form-check-label">I agree to the terms and conditions</label>
+            </div>
 
-        <button className="submit" onClick={this.handleSubmit}>
-          Submit
-        </button>
-        <p style={{ marginLeft: "60px", marginTop: "15px", display: "flex" }}>
-          Don't have an account?{" "}
-          <a href="#" onClick={() => this.props.navigate("/signup")}>
-            Sign Up
-          </a>
-        </p>
+            <button type="submit" className="btn btn-primary">Login</button>
+          </form>
+          <p className="text-center mt-3">
+            Already have an account? <a href="#" onClick={() => this.setState({navigateToSignup: true })}className="text-primary">Sign Up</a>
+          </p>
+        </div>
       </div>
     );
   }
 }
 
-export default Login;
+export default Register;
