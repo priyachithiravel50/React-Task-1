@@ -76,11 +76,6 @@ class Register extends Component {
       errors.address = "Address is required";
       isValid = false;
     }
-    if (!this.state.role) {
-      errors.role = "Role is required";
-      isValid = false;
-    }
-    
 
     this.setState({ errors });
     return isValid;
@@ -130,11 +125,11 @@ class Register extends Component {
               </div>
             </div>
 
-            {/* <div className="mb-3">
+            <div className="mb-3">
               <label className="">Email:</label>
               <input type="email" className="form-control" id="email" value={email} onChange={this.handleChange} placeholder="Email"/>
               {errors.email && <small className="text-danger">{errors.email}</small>}
-            </div> */}
+            </div>
 
             <div className="mb-3">
               <label className="form-label">Phone no:</label>
