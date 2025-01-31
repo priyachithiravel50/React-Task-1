@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class Name extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -165,4 +165,4 @@ class Name extends Component {
   }
 }
 
-export default Name;
+export default Profile;
