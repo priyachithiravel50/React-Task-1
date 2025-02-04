@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-class Admin extends Component {
+class User extends Component {
   constructor(props) {
     super(props);
   }
@@ -12,7 +12,7 @@ class Admin extends Component {
       <>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <Link className="navbar-brand fs-2" to="/">Admin</Link>
+            <Link className="navbar-brand fs-2" to="/">User</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"> </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
@@ -22,6 +22,10 @@ class Admin extends Component {
 
                 <li className="nav-item">
                 <Link className="nav-link fs-4" to="/user">User</Link>
+                </li>
+
+                <li className="nav-item">
+                <Link className="nav-link fs-4" to="/settings">Settings</Link>
                 </li>
               </ul>
             </div>
@@ -34,4 +38,4 @@ class Admin extends Component {
   }
 }
 
-export default Admin;
+export default User;

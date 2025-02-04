@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css"; // Bootstrap import
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Navigate } from "react-router-dom";
 
 class Register extends Component {
@@ -13,11 +13,10 @@ class Register extends Component {
       password: "",
       confirmPassword: "",
       address: "",
-      role:"",
+      role: "",
       errors: {},
       passwordVisible: false,
       confirmPasswordVisible: false,
-      navigateToSignin: false,
     };
   }
 
@@ -38,7 +37,7 @@ class Register extends Component {
   };
 
   validate = () => {
-    const { firstName, lastName, email, number, password, confirmPassword, address } = this.state;
+    const { firstName, lastName, email, number, password, confirmPassword, address, role } = this.state;
     let errors = {};
     let isValid = true;
 
@@ -76,6 +75,10 @@ class Register extends Component {
       errors.address = "Address is required";
       isValid = false;
     }
+    if (!role) {
+      errors.role = "Role is required";
+      isValid = false;
+    }
 
     this.setState({ errors });
     return isValid;
@@ -84,9 +87,16 @@ class Register extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const isValid = this.validate();
+
     if (!isValid) return;
 
-    alert("Registration Successful!");
+    const { role } = this.state;
+
+    if (role === "admin") {
+      this.setState({ navigateTo: "/admin" });
+    } else if (role === "user") {
+      this.setState({ navigateTo: "/user" });
+    }
 
     this.setState({
       firstName: "",
@@ -96,26 +106,33 @@ class Register extends Component {
       password: "",
       confirmPassword: "",
       address: "",
+      role: "",
+      navigateToSignin: false,
       errors: {},
     });
   };
 
   render() {
-    const { firstName, lastName, email, number, password, confirmPassword, address, errors, passwordVisible, confirmPasswordVisible,navigateToSignin } = this.state;
+    const { firstName, lastName, email, number, password, confirmPassword, address, role, errors, passwordVisible, confirmPasswordVisible, navigateTo,navigateToSignin } = this.state;
+
+    if (navigateTo) {
+      return <Navigate to={navigateTo} />;
+    };
 
     if (navigateToSignin){
-      return<Navigate to='/Signin'/>;
-    }
+            return<Navigate to='/Signin'/>;
+          }
+
     return (
-      <div className="contain mt-1">
-        <div className=" p-4 shadow">
-          <h2 className="text-center mb-4 ms-1">Register Form</h2>
+      <div className="contain mt-2">
+        <div className="p-4 shadow">
+          <h2 className="text-center mb-4">Register Form</h2>
           <form onSubmit={this.handleSubmit}>
-          <div className="row">
+            <div className="row">
               <div className="col-md-6 mb-3">
                 <label className="form-label">First Name:</label>
                 <input type="text" className="form-control" id="firstName" value={firstName} onChange={this.handleChange} placeholder="First Name"/>
-                {errors.firstName && <small className="text-danger position-absolute">{errors.firstName}</small>}
+                {errors.firstName && <small className="text-danger">{errors.firstName}</small>}
               </div>
 
               <div className="col-md-6 mb-3">
@@ -126,7 +143,7 @@ class Register extends Component {
             </div>
 
             <div className="mb-3">
-              <label className="">Email:</label>
+              <label>Email:</label>
               <input type="email" className="form-control" id="email" value={email} onChange={this.handleChange} placeholder="Email"/>
               {errors.email && <small className="text-danger">{errors.email}</small>}
             </div>
@@ -136,47 +153,45 @@ class Register extends Component {
               <input type="number" className="form-control" id="number" value={number} onChange={this.handleChange} placeholder="Phone no"/>
               {errors.number && <small className="text-danger">{errors.number}</small>}
             </div>
+
             <div className="mb-3 position-relative">
-              <label className="form-label">Password:</label> 
+              <label className="form-label">Password:</label>
               <div className="position-relative">
-              <input type={passwordVisible ? "text" : "password"} className="form-control pe-5"  id="password"  value={password}  onChange={this.handleChange}  placeholder="Password"/>
-            <i className={`fa ${passwordVisible ? 'fa-eye-slash' : 'fa-eye'} position-absolute end-0 top-50 translate-middle-y me-3`} style={{ cursor: "pointer" }}  onClick={this.togglePasswordVisibility}></i>
-           </div>
-           {errors.password && <small className="text-danger">{errors.password}</small>}
-          </div>
+                <input type={passwordVisible ? "text" : "password"} className="form-control pe-5" id="password" value={password} onChange={this.handleChange} placeholder="Password"/>
+                <i className={`fa ${passwordVisible ? 'fa-eye-slash' : 'fa-eye'} position-absolute end-0 top-50 translate-middle-y me-3`} style={{ cursor: "pointer" }} onClick={this.togglePasswordVisibility}></i>
+              </div>
+              {errors.password && <small className="text-danger">{errors.password}</small>}
+            </div>
 
             <div className="mb-3 position-relative">
               <label className="form-label">Confirm Password:</label>
-            <div className="position-relative">
-              <input type={confirmPasswordVisible ? "text" : "password"}  className="form-control pe-5"  id="confirmPassword"  value={confirmPassword}  onChange={this.handleChange}  placeholder="Confirm Password"/>
-              <i className={`fa ${confirmPasswordVisible ? 'fa-eye-slash' : 'fa-eye'} position-absolute end-0 top-50 translate-middle-y me-3`} style={{ cursor: "pointer" }}  onClick={this.toggleConfirmPasswordVisibility}> </i>
-            </div>
+              <div className="position-relative">
+                <input type={confirmPasswordVisible ? "text" : "password"} className="form-control pe-5" id="confirmPassword" value={confirmPassword} onChange={this.handleChange} placeholder="Confirm Password"/>
+                <i className={`fa ${confirmPasswordVisible ? 'fa-eye-slash' : 'fa-eye'} position-absolute end-0 top-50 translate-middle-y me-3`} style={{ cursor: "pointer" }} onClick={this.toggleConfirmPasswordVisibility}></i>
+              </div>
               {errors.confirmPassword && <small className="text-danger">{errors.confirmPassword}</small>}
             </div>
 
+            {/* <div className="mb-3">
+              <label className="form-label">Address:</label>
+              <textarea className="form-control" id="address" value={address} onChange={this.handleChange} placeholder="Address"></textarea>
+              {errors.address && <small className="text-danger">{errors.address}</small>}
+            </div> */}
 
             <div className="mb-3">
-              <label className="form-label">Address:</label>
-              <textarea type="text" className="form-control" id="address" value={address} onChange={this.handleChange} placeholder="Address"/>
-              {errors.address && <small className="text-danger">{errors.address}</small>}
+              <label className="form-label">Role:</label>
+              <select className="form-control" id="role" value={role} onChange={this.handleChange}>
+                <option value="">Select Role</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </select>
+              {errors.role && <small className="text-danger">{errors.role}</small>}
             </div>
 
-            <div className="mb-3">
-            <label className="form-label">Role:</label>
-            <select className="form-control" id="role" value={this.state.role} onChange={this.handleChange}>
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-            </select>
-            {this.state.errors.role && <small className="text-danger">{this.state.errors.role}</small>}
-          </div>
-
-
-
-            <button type="submit" className="btn btn-primary mt-1">Submit</button>
+            <button type="submit" className="btn btn-primary mt-2">Submit</button>
           </form>
           <p className="text-center mt-3">
-            Already have an account? <a href="#" onClick={() => this.setState({navigateToSignin: true })}className="text-primary">Sign in</a>
+          Already have an account? <a href="#" onClick={() => this.setState({navigateToSignin: true })}className="text-primary">Sign in</a>
           </p>
         </div>
       </div>
