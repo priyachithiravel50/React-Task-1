@@ -20,7 +20,7 @@ class Register extends Component {
   };
 
   validateForm = () => {
-    const { Name,  Password, navigateToSignup} = this.state;
+    const { Name,  Password} = this.state;
     let errors = {};
     let isValid = true;
 
@@ -64,28 +64,14 @@ class Register extends Component {
           <form onSubmit={this.handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Name</label>
-              <input
-                type="text"
-                className="form-control"
-                id="Name"
-                placeholder="Enter your name"
-                value={this.state.Name}
-                onChange={this.handleChange}
-              />
+              <input type="text" className="form-control" id="Name" placeholder="Enter your name" value={this.state.Name} onChange={this.handleChange}/>
               {this.state.errors.Name && <small className="text-danger">{this.state.errors.Name}</small>}
             </div>
 
            
             <div className="mb-3">
               <label className="form-label">Password</label>
-              <input
-                type={this.state.showPassword ? "text" : "password"}
-                className="form-control"
-                id="Password"
-                placeholder="Enter password"
-                value={this.state.Password}
-                onChange={this.handleChange}
-              />
+              <input type={this.state.showPassword ? "text" : "password"} className="form-control" id="Password" placeholder="Enter password" value={this.state.Password} onChange={this.handleChange}/>
               {this.state.errors.Password && <small className="text-danger">{this.state.errors.Password}</small>}
             </div>
 
