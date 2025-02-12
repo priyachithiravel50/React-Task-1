@@ -5,10 +5,11 @@ import Signup from './Component/Signup';
 import Profile from './Component/Profile';
 import Admin from './Component/Admin';
 import User from './Component/User';
+import Landing from './Component/Landing';
 
 
 function App() {
-  return (
+  return (    
    <>
     <BrowserRouter>
     <Routes>
@@ -17,6 +18,7 @@ function App() {
       <Route path='/signup' element={<Signup/>}></Route>
       <Route path='/admin' element={<Admin/>}></Route>
       <Route path='/user' element={<User/>}></Route>
+      <Route path='/landing' element={<Landing/>}></Route>
     </Routes>
     </BrowserRouter>
    </>
