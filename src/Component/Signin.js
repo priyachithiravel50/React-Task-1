@@ -67,19 +67,15 @@ class Register extends Component {
               <input type="text" className="form-control" id="Name" placeholder="Enter your name" value={this.state.Name} onChange={this.handleChange}/>
               {this.state.errors.Name && <small className="text-danger">{this.state.errors.Name}</small>}
             </div>
-
-           
             <div className="mb-3">
               <label className="form-label">Password</label>
               <input type={this.state.showPassword ? "text" : "password"} className="form-control" id="Password" placeholder="Enter password" value={this.state.Password} onChange={this.handleChange}/>
               {this.state.errors.Password && <small className="text-danger">{this.state.errors.Password}</small>}
             </div>
-
-            <div className="form-check mb-3">
+             <div className="form-check mb-3">
               <input type="checkbox" className="form-check-input" id="terms"/>
               <label className="form-check-label">I agree to the terms and conditions</label>
             </div>
-
             <button type="submit" className="btn btn-primary">Login</button>
           </form>
           <p className="text-center mt-3">
