@@ -1,94 +1,112 @@
-import React, { Component } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./signin.css";
-import { Navigate } from "react-router-dom";
+import React from 'react';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
-class Register extends Component {
+// ... (rest of the imports)
+
+const StyledBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center', // Center content horizontally
+  padding: theme.spacing(4),
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: theme.palette.background.paper,
+  boxShadow: theme.shadows[2],
+  width: 570, // Set the desired width here!
+  margin: '0 auto', // Center the Box itself horizontally
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  marginBottom: theme.spacing(2),
+  width: '100%',
+}));
+
+class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Name: "",
-      Password: "",
-      errors: {},
-      showPassword: false,
-      navigateToSignup: false,
+      name: '',
+      email: '',
+      password: '',
+      agreeToUpdates: false,
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange = (e) => {
-    this.setState({ [e.target.id]: e.target.value });
-  };
+  handleChange(event) {
+    const { name, value, type, checked } = event.target;
+    this.setState({
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  }
 
-  validateForm = () => {
-    const { Name,  Password} = this.state;
-    let errors = {};
-    let isValid = true;
-
-    if (!Name.trim()) {
-      errors.Name = "Username is required";
-      isValid = false;
-    }
-   
-    if (!Password.trim()) {
-      errors.Password = "Password is required";
-      isValid = false;
-    }
-    
-
-    this.setState({ errors });
-    return isValid;
-  };
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    if (!this.validateForm()) return;
-
-    alert("Registration Successful!");
-    // this.props.navigate("/home");
-    this.setState({ Name: "",  Password: "", errors: {} });
-  };
-
-  togglePassword = () => {
-    this.setState((prevState) => ({ showPassword: !prevState.showPassword }));
-  };
+  handleSubmit(event) {
+    event.preventDefault();
+    // Handle form submission here (e.g., send data to API)
+    console.log(this.state);
+  }
 
   render() {
-    const { navigateToSignup} = this.state;
-    if (navigateToSignup){
-      return<Navigate to='/Signup'/>;
-    }
     return (
-      <div className="contains mt-5 ">
-        <div className="card p-4 shadow-lg w-50 mx-auto">
-          <h2 className="text-center">Register</h2>
-          <form onSubmit={this.handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Name</label>
-              <input type="text" className="form-control" id="Name" placeholder="Enter your name" value={this.state.Name} onChange={this.handleChange}/>
-              {this.state.errors.Name && <small className="text-danger">{this.state.errors.Name}</small>}
-            </div>
+      <StyledBox> {/* Use the styled Box component */}
+        <Typography variant="h5" gutterBottom>Sign Up</Typography>
 
-           
-            <div className="mb-3">
-              <label className="form-label">Password</label>
-              <input type={this.state.showPassword ? "text" : "password"} className="form-control" id="Password" placeholder="Enter password" value={this.state.Password} onChange={this.handleChange}/>
-              {this.state.errors.Password && <small className="text-danger">{this.state.errors.Password}</small>}
-            </div>
+        <Typography variant="body2" color="text.secondary" align="center" gutterBottom>
+          Already have an account? <a href="#">Login here</a>
+        </Typography>
 
-            <div className="form-check mb-3">
-              <input type="checkbox" className="form-check-input" id="terms"/>
-              <label className="form-check-label">I agree to the terms and conditions</label>
-            </div>
+        <form onSubmit={this.handleSubmit} style={{ width: '100%' }}> {/* Form occupies full width */}
+          <StyledTextField 
+            label="Name" 
+            type="text" 
+            name="name" 
+            value={this.state.name} 
+            onChange={this.handleChange} 
+            required 
+            halfWidth // Ensure TextField takes full width
+          />
+          <StyledTextField 
+            label="Email Id" 
+            type="email" 
+            name="email" 
+            value={this.state.email} 
+            onChange={this.handleChange} 
+            required 
+            fullWidth // Ensure TextField takes full width
+          />
+          <StyledTextField 
+            label="Password" 
+            type="password" 
+            name="password" 
+            value={this.state.password} 
+            onChange={this.handleChange} 
+            required 
+            fullWidth // Ensure TextField takes full width
+          />
 
-            <button type="submit" className="btn btn-primary">Login</button>
-          </form>
-          <p className="text-center mt-3">
-            Already have an account? <a href="#" onClick={() => this.setState({navigateToSignup: true })}className="text-primary">Sign Up</a>
-          </p>
-        </div>
-      </div>
+          <FormControlLabel
+            control={<Checkbox 
+              name="agreeToUpdates" 
+              checked={this.state.agreeToUpdates} 
+              onChange={this.handleChange} 
+            />}
+            label="By signing up you agree to receive updates and special offers."
+          />
+          
+          <Button variant="contained" color="primary" type="submit"  fullWidth>
+            Submit
+          </Button>
+        </form>
+      </StyledBox>
     );
   }
 }
 
-export default Register;
+export default SignUpForm;
