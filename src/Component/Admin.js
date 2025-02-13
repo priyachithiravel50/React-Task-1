@@ -1,35 +1,26 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { Component } from 'react';
+import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material';
 
 class Admin extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
-      <>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container-fluid">
-            <Link className="navbar-brand fs-2" to="/">Admin</Link>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"> </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav ms-auto">
-                <li className="nav-item">   
-                  <Link className="nav-link fs-4" to="/my-profile">My Profile</Link>
-                </li>
-
-                <li className="nav-item">
-                <Link className="nav-link fs-4" to="/user">User</Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
-      
-      </>
+      <Box>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" sx={{ flexGrow: 1, fontFamily: 'Georgia' }}>
+              Admin Dashboard
+            </Typography>
+            <Button color="inherit">My Profile</Button>
+            <Button color="inherit">Settings</Button>
+            <Button color="inherit">User</Button>
+          </Toolbar>
+        </AppBar>
+        <Box p={3}>
+          <Typography variant="h4" fontFamily={'Georgia'}>
+            Welcome, Admin!
+          </Typography>
+        </Box>
+      </Box>
     );
   }
 }

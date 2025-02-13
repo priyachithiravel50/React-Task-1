@@ -1,110 +1,74 @@
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import React, { Component } from 'react';
+import { TextField, Checkbox, Button, Typography, Link, FormControlLabel, Box, Paper, Grid } from '@mui/material';
 
-// ... (rest of the imports)
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center', // Center content horizontally
-  padding: theme.spacing(4),
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: theme.shadows[2],
-  width: 570, // Set the desired width here!
-  margin: '0 auto', // Center the Box itself horizontally
-}));
-
-const StyledTextField = styled(TextField)(({ theme }) => ({
-  marginBottom: theme.spacing(2),
-  width: '100%',
-}));
-
-class SignUpForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      email: '',
-      password: '',
-      agreeToUpdates: false,
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    const { name, value, type, checked } = event.target;
-    this.setState({
-      [name]: type === 'checkbox' ? checked : value,
+class SignUpForm extends Component {
+  handleSignIn = () => {
+    this.setState({}, () => {
+      window.location.href = '/signup';
     });
-  }
+  };
+  state = {
+    name: '',
+    password: '',
+    agree: false,
+  };
 
-  handleSubmit(event) {
+  handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    this.setState({ [name]: type === 'checkbox' ? checked : value });
+  };
+
+  handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission here (e.g., send data to API)
     console.log(this.state);
-  }
+  };
 
   render() {
     return (
-      <StyledBox> {/* Use the styled Box component */}
-        <Typography variant="h5" gutterBottom>Sign Up</Typography>
+      <Grid container justifyContent="center" alignItems="center" minHeight="100vh" style={{ backgroundColor: '#01419c' }}>
+        <Paper elevation={10} style={{ padding: '30px', borderRadius: '30px', maxWidth: '1100px', width: '100%', backgroundColor: '#e2edff',height:'500px' }}>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Box width="50%">
+              <Typography variant="h4" gutterBottom>Sign in</Typography>
+              <Typography variant="body2">Already have an account? <Link href="#" onClick={() => this.handleSignIn()}>Login here</Link>
+              </Typography>
 
-        <Typography variant="body2" color="text.secondary" align="center" gutterBottom>
-          Already have an account? <a href="#">Login here</a>
-        </Typography>
+              <form onSubmit={this.handleSubmit} style={{ marginTop: '20px', borderRadius: '25px', fontFamily:'Georgia' }}>
+                <TextField
+                  label="Name"
+                  name="name"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  value={this.state.name}
+                  onChange={this.handleChange}
+                  required
+                />
+                <TextField
+                  label="Password"
+                  name="password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  required
+                />
+                <FormControlLabel
+                  control={<Checkbox name="agree" color="primary" checked={this.state.agree} onChange={this.handleChange} />}
+                  label="By signing up you agree to receive updates and special offers."
+                />
+                <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '50px', borderRadius: '25px',backgroundColor:'#01419c', fontFamily:'Georgia' }}>Submit</Button>
+              </form>
+            </Box>
 
-        <form onSubmit={this.handleSubmit} style={{ width: '100%' }}> {/* Form occupies full width */}
-          <StyledTextField 
-            label="Name" 
-            type="text" 
-            name="name" 
-            value={this.state.name} 
-            onChange={this.handleChange} 
-            required 
-            halfWidth // Ensure TextField takes full width
-          />
-          <StyledTextField 
-            label="Email Id" 
-            type="email" 
-            name="email" 
-            value={this.state.email} 
-            onChange={this.handleChange} 
-            required 
-            fullWidth // Ensure TextField takes full width
-          />
-          <StyledTextField 
-            label="Password" 
-            type="password" 
-            name="password" 
-            value={this.state.password} 
-            onChange={this.handleChange} 
-            required 
-            fullWidth // Ensure TextField takes full width
-          />
-
-          <FormControlLabel
-            control={<Checkbox 
-              name="agreeToUpdates" 
-              checked={this.state.agreeToUpdates} 
-              onChange={this.handleChange} 
-            />}
-            label="By signing up you agree to receive updates and special offers."
-          />
-          
-          <Button variant="contained" color="primary" type="submit"  fullWidth>
-            Submit
-          </Button>
-        </form>
-      </StyledBox>
+            <Box width="50%" display="flex" justifyContent="center" alignItems="center"> 
+              <img src='/Assets/image.jpg' alt="Illustration" style={{ maxWidth: '80%', borderRadius: '30px', fontFamily:'Georgia' }} />
+            </Box>
+          </Box>
+        </Paper>
+      </Grid>
     );
   }
 }
