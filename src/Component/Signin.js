@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TextField, Checkbox, Button, Typography, Link, FormControlLabel, Box, Paper, Grid } from '@mui/material';
 
-class SignUpForm extends Component {
+class Signin extends Component {
   handleSignIn = () => {
     this.setState({}, () => {
       window.location.href = '/signup';
@@ -73,4 +73,4 @@ class SignUpForm extends Component {
   }
 }
 
-export default SignUpForm;
+export default Signin;
