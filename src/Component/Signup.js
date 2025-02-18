@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { TextField, Checkbox, Button, Typography, Link, FormControlLabel, Box, Paper, Grid, MenuItem } from '@mui/material';
+import { TextField, Checkbox, Button, Typography, Link, FormControlLabel, Box, Paper, Grid, MenuItem, InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Navigate } from 'react-router-dom';
 
 class Signup extends Component {
@@ -10,17 +11,20 @@ class Signup extends Component {
     password: '',
     role: '',
     agree: false,
-    redirect: false, 
+    redirect: false,
+    showPassword: false  
   };
-
   handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     this.setState({ [name]: type === 'checkbox' ? checked : value });
   };
-
+  togglePasswordVisibility = () => {
+    this.setState((prevState) => ({
+      showPassword: !prevState.showPassword
+    }));
+  };
   handleSubmit = (event) => {
     event.preventDefault();
-    
     const { name, email, phoneno, password, role, agree } = this.state;
     const data = {
       name,
@@ -30,7 +34,6 @@ class Signup extends Component {
       role,
       agree
     };
-
     // Fetch API POST request
     fetch('http://localhost:8080/save', {
       method: 'POST',
@@ -43,7 +46,7 @@ class Signup extends Component {
         if (response.ok) {
           console.log('Data saved successfully');
           alert('Data saved successfully');
-          this.setState({ redirect: true });  // Success aana redirect aagum
+          this.setState({ redirect: true }); 
         } else {
           throw new Error('Network response was not ok.');
         }
@@ -53,7 +56,6 @@ class Signup extends Component {
         alert('Error saving data');
       });
   };
-
   render() {
     if (this.state.redirect) {
       return <Navigate to="/Admin" />;
@@ -65,30 +67,25 @@ class Signup extends Component {
             <Box width="50%">
               <Typography variant="h4" fontFamily={'Georgia'} gutterBottom>Sign Up</Typography>
               <Typography variant="body2" fontFamily={'Georgia'}>Already have an account? <Link href="/signin">Login here</Link></Typography>
-
               <form onSubmit={this.handleSubmit} style={{ marginTop: '20px', borderRadius: '25px', fontFamily:'Georgia' }}>
                 <TextField label="Name" name="name" variant="outlined" fullWidth margin="normal" value={this.state.name} onChange={this.handleChange} required/>
                 <TextField label="Email" name="email" variant="outlined" fullWidth margin="normal" value={this.state.email} onChange={this.handleChange} required />
                 <TextField label="Phone No" name="phoneno" variant="outlined" fullWidth margin="normal" value={this.state.phoneno} onChange={this.handleChange} required />
-                <TextField label="Password" name="password" type="password" variant="outlined" fullWidth margin="normal" value={this.state.password} onChange={this.handleChange} required />
-
-                {/* Dropdown for Role */}
-                <TextField
-                  select
-                  label="Role"
-                  name="role"
-                  value={this.state.role}
-                  onChange={this.handleChange}
-                  fullWidth
-                  margin="normal"
-                  required>
+                <TextField  label="Password"  name="password"  type={this.state.showPassword ? 'text' : 'password'}  variant="outlined"  fullWidth  margin="normal"  value={this.state.password}  onChange={this.handleChange}  required 
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={this.togglePasswordVisibility} onMouseDown={(e) => e.preventDefault()} edge="end">
+                          {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>)}}/>
+                <TextField select label="Role" name="role" value={this.state.role} onChange={this.handleChange} fullWidth margin="normal" required>
                   <MenuItem value="admin">Admin</MenuItem>
                   <MenuItem value="user">User</MenuItem>
                 </TextField>
-
                 <FormControlLabel 
-                  control={<Checkbox name="agree" color="primary"  checked={this.state.agree} onChange={this.handleChange} />}
-                  label="By signing up you agree to receive updates and special offers."  />
+                 control={<Checkbox name="agree" color="primary"  checked={this.state.agree} onChange={this.handleChange} />}
+                label="By signing up you agree to receive updates and special offers."  />
                 <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: '50px', borderRadius: '25px',backgroundColor:'#01419c', fontFamily:'Georgia' }}>Submit</Button>
               </form>
             </Box>
@@ -101,5 +98,4 @@ class Signup extends Component {
     );
   }
 }
-
 export default Signup;
