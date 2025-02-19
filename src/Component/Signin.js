@@ -31,7 +31,7 @@ class Signin extends Component {
               </Typography>
               <form onSubmit={this.handleSubmit} style={{ marginTop: '20px', borderRadius: '25px', fontFamily:'Georgia' }}>
                 <TextField label="Name" name="name" variant="outlined" fullWidth margin="normal" value={this.state.name} onChange={this.handleChange} required />
-                <TextField label="Password" name="password" type="password" variant="outlined" fullWidth margin="normal" value={this.state.password} onChange={this.handleChange} required/>
+                <TextField label="Password" name="password" type="number" variant="outlined" fullWidth margin="normal" value={this.state.password} onChange={this.handleChange} required/>
                 <FormControlLabel
                   control={<Checkbox name="agree" color="primary" checked={this.state.agree} onChange={this.handleChange} />}
                   label="By signing up you agree to receive updates and special offers."/>

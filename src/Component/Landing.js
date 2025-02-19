@@ -14,6 +14,12 @@ class Navbar extends Component {
           </div>
         </nav>
 
+        <div style={{width:'100px',backgroundColor:'blue'}}>
+          <p>dfghjk</p>
+          <p>sdfghjk</p>
+          <p>sdfghjkl</p>
+        </div>
+
         {/* Cards Section */}
         <div className="cards-container">
           <div className="card">
